@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const Home = () => {
   return (
     <>
@@ -16,14 +18,14 @@ export const Home = () => {
                     <div className="col-md-6">
                       <div className="text-bg">
                         <h1>Welcome</h1>
-                        <span>car repair services</span>
+                        <span>Used cars for great prices!</span>
                         <p>
                           It is a long established fact that a reader will be
                           distracted by the readable content of a page when looking
                           at its layout. The point of using Lorem Ipsum is that it
                           has a more-or-less normal distribution of letters,{" "}
                         </p>
-                        <a href="#">More Info </a> <a href="#">Contact Us</a>
+                        <Link to={'/about'}>More Info </Link> <Link to={'/catalog'}>Catalog</Link>
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -43,15 +45,10 @@ export const Home = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="text-bg">
-                        <h1>Welcome</h1>
-                        <span>car repair services</span>
-                        <p>
-                          It is a long established fact that a reader will be
-                          distracted by the readable content of a page when looking
-                          at its layout. The point of using Lorem Ipsum is that it
-                          has a more-or-less normal distribution of letters,{" "}
-                        </p>
-                        <a href="#">More Info </a> <a href="#">Contact Us</a>
+                        <h1>Not a member yet?</h1>
+                        <span>Use the button below to create your new account</span>
+                   
+                        <Link to={'/register'}>Register here!</Link>
                       </div>
                     </div>
                     <div className="col-md-6">

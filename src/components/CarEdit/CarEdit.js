@@ -1,22 +1,35 @@
-
+import { useParams } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
+import { useEffect } from "react";
+import { useService } from "../../hooks/useService";
+import { carServiceFactory } from "../../services/carService";
 
-import styles from './Create.module.css'
+import styles from './Edit.module.css'
 
-export const CreateCarAd = ({
-  onCreateCarSubmit,
+export const CarEdit = ({
+    onCarEditSubmit,
 }) => {
-  const { values, changeHandler, onSubmit } = useForm({
-    make: '',
-    model: '',
-    imageUrl: '',
-    year: '',
-    power: '',
-    price: '',
-    description: ''
+    const { carId } = useParams();
+    const carService = useService(carServiceFactory);
+    const {values, changeHandler, onSubmit, changeValues} = useForm({
 
-  }, onCreateCarSubmit);
+        _id:  '',
+        make: '',
+        model: '',
+        imageUrl: '',
+        year: '',
+        power: '',
+        price: '',
+        description: ''
 
+    }, onCarEditSubmit);
+
+    useEffect(() => {
+        carService.getOne(carId)
+            .then(result => {
+                changeValues(result);
+            });
+    }, [carId]);
 
   return (
     <>

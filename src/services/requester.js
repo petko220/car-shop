@@ -21,6 +21,7 @@ export const request = async (method, token, url, data) => {
     };
   };
 
+  
   const response = await fetch(url, options)
 
 
@@ -41,12 +42,19 @@ export const request = async (method, token, url, data) => {
 
 
 export const requestFactory = (token) => {
-
+  if(!token) {
+    const serializedUser = localStorage.getItem('user');
+    
+    if (serializedUser) {
+      const user = JSON.parse(serializedUser);
+      token = user.accessToken;
+    }
+  }
   return {
-  get: request.bind(null, 'GET', token),
-  post: request.bind(null, 'POST', token),
-  put: request.bind(null, 'PUT', token),
-  patch: request.bind(null, 'PATCH', token),
-  del: request.bind(null, 'DELETE', token)
+    get: request.bind(null, 'GET', token),
+    post: request.bind(null, 'POST', token),
+    put: request.bind(null, 'PUT', token),
+    patch: request.bind(null, 'PATCH', token),
+    del: request.bind(null, 'DELETE', token)
   };
 };

@@ -67,12 +67,13 @@ export const Header = () => {
                       </li>
 
 
-
+                      {isAuthenticated && (
                       <li className="nav-item">
                         <Link className="nav-link" to="/create-car-ad">
                           Sell your car
                         </Link>
                       </li>
+                      )}
 
                       {isAuthenticated && (
                       <li className="nav-item">
@@ -103,11 +104,7 @@ export const Header = () => {
                       )}
                       
 
-                      <li className="nav-item d_none">
-                        <a className="nav-link" href="#">
-                          <i className="fa fa-search" aria-hidden="true" />
-                        </a>
-                      </li>
+
                     </ul>
                   </div>
                 </nav>

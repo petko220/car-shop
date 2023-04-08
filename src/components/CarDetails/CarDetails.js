@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useService } from "../../hooks/useService";
 import {carServiceFactory }from '../../services/carService';
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
 
-export const CarDetails = () => {
+import styles from './Details.module.css'
+
+export let modified = '';
+
+export const CarDetails = ({onDelete}) => {
 
   const {userId} = useContext(AuthContext);
   const {carId} = useParams();
   const[car, setCar] = useState({});
-  const carService = useService(carServiceFactory)
+  const carService = useService(carServiceFactory);
+  const navigate = useNavigate();
 
   useEffect(() => {
     carService.getOne(carId)
@@ -18,6 +23,23 @@ export const CarDetails = () => {
         setCar(result);
       });
   },[carId])
+
+  const onDeleteClick = async () => {
+
+    if (window.confirm('are you sure?') == true){
+      try {
+        await carService.delete(car._id);
+        modified = await carService.getAll();
+        onDelete();
+        navigate('/catalog');
+      } catch (error) {
+        
+      }
+
+    }
+
+    
+  }
 
   return (
 
@@ -125,16 +147,16 @@ export const CarDetails = () => {
                   <div className="col-12  mb-4 p-0">
 
                     {car._ownerId === userId && (
-                    <div className="btn btn-primary">
+                    <Link to={`/catalog/edit/${carId}`} className="btn btn-primary">
                       Edit
                       <span className="fas ps-2" />
-                    </div>
+                    </Link>
                     )}
                      {car._ownerId === userId && (
-                    <div className="btn btn-primary">
+                    <button className="btn btn-primary" onClick={onDeleteClick}>
                       Delete
                       <span className="fas ps-2" />
-                    </div>
+                    </button>
                      )}
 
                   </div>

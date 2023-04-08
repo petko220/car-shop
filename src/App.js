@@ -2,8 +2,8 @@ import { Routes, Route, useNavigate, Form } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 
 import { carServiceFactory } from './services/carService';
-import { AuthContext } from './contexts/AuthContext';
-import {authServiceFactory} from './services/authService';
+import { AuthProvider } from './contexts/AuthContext';
+
 
 import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
@@ -13,17 +13,20 @@ import { About } from './components/About/About';
 import { Login } from './components/Login/Login';
 import { Register } from './components/Register/Register';
 import { CreateCarAd } from './components/Create/Create';
-import { CarDetails } from './components/CarDetails/CarDetails';
+import { CarDetails, modified } from './components/CarDetails/CarDetails';
 import { Logout } from './components/Logout/Logout';
+import { CarEdit } from './components/CarEdit/CarEdit';
+
+
 
 
 function App() {
   const navigate = useNavigate();
 
   const [cars, setCars] = useState([]);
-  const [user, setUser] = useState({});
-  const carService = carServiceFactory(user.accessToken);
-  const authService = authServiceFactory(user.accessToken);
+  
+  const carService = carServiceFactory();
+ 
 
   useEffect(() => {
     carService.getAll()
@@ -33,67 +36,40 @@ function App() {
   }, []);
 
   const onCreateCarSubmit = async (data) => {
-    const newCar = await carService.create(data);
-
-    setCars(state => [...state, newCar]);
-
-    navigate('/catalog');
-  };
-
-  const onLoginSubmit = async (data) => {
-   
     try {
-      const result = await authService.login(data);
+      const newCar = await carService.create(data);
 
-      setUser(result);
-
+      if(newCar) {
+      setCars(state => [...state, newCar]);
+  
       navigate('/catalog');
-
+      }
     } catch (error) {
-      console.log('wrong email or password');
-    }
-  };
-
-  const onRegisterSubmit = async (data) => {
-    const { repassword, ...registerData } = data; 
-    if(repassword !== registerData.password) {
-      return;
+      alert(error.message);
     }
 
-
-    try {
-      const result = await authService.register(registerData);
-
-      setUser(result);
-
-      navigate('/catalog');
-
-    } catch (error) {
-      console.log('Error');
-    }
   };
 
-  const onLogout = async () => {
-   await authService.logout();
-
-    setUser({});
+  const onDelete = () => {
+    setCars(modified);
   };
 
-  const context = {
-    onLoginSubmit,
-    onRegisterSubmit,
-    onLogout,
-    userId: user._id,
-    token: user.accessToken,
-    email: user.email,
-    isAuthenticated: !!user.accessToken
-    
+
+  const onCarEditSubmit = async (values) => {
+    const result = await carService.edit(values._id, values);
+
+    setCars(state => state.map(x => x._id === values._id ? result : x));
+
+    navigate(`/catalog/${values._id}`);
   };
+
+
+
 
 
   return (
     <>
-      <AuthContext.Provider value={context}>
+      <AuthProvider>
         <Header />
         <Routes>
           <Route path='/' element={<Home />} />
@@ -103,10 +79,11 @@ function App() {
           <Route path='/logout' element={<Logout />} />
           <Route path='/register' element={<Register />} />
           <Route path='/create-car-ad' element={<CreateCarAd onCreateCarSubmit={onCreateCarSubmit} />} />
-          <Route path='/catalog/:carId' element={<CarDetails />} />
+          <Route path='/catalog/:carId' element={<CarDetails onDelete={onDelete}/>} />
+          <Route path='/catalog/edit/:carId' element={<CarEdit onCarEditSubmit={onCarEditSubmit} />} />
         </Routes>
         <Footer />
-      </AuthContext.Provider>
+      </AuthProvider>
     </>
 
 

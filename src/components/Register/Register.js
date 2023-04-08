@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { useForm } from "../../hooks/useForm";
 import { AuthContext } from "../../contexts/AuthContext";
+import styles from './Register.module.css';
 
 export const Register = () => {
   const { onRegisterSubmit } = useContext(AuthContext);
@@ -18,18 +19,17 @@ export const Register = () => {
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       {/* <title>Login Form | CodingLab</title> */}
-      <link rel="stylesheet" href="css/login-style.css" />
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
       />
-      <div className="container">
-        <div className="wrapper">
-          <div className="title">
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.title}>
             <span>Register Form</span>
           </div>
           <form action="#" method="POST" onSubmit={onSubmit}>
-            <div className="row">
+            <div className={styles.row}>
               <i className="fas fa-user" />
               <input 
               type="text" 
@@ -40,7 +40,7 @@ export const Register = () => {
               onChange={changeHandler}
               />
             </div>
-            <div className="row">
+            <div className={styles.row}>
               <i className="fas fa-lock" />
               <input 
               type="password" 
@@ -52,10 +52,10 @@ export const Register = () => {
                />
             </div>
 
-            <div className="row">
+            <div className={styles.row}>
               <i className="fas fa-lock" />
               <input 
-              type="repassword" 
+              type="password" 
               name="repassword" 
               placeholder="Repeat password" 
               required=""
@@ -64,12 +64,12 @@ export const Register = () => {
                />
             </div>
 
-            <div className="row button">
+            <div className={styles.button + ' ' + styles.row}>
               <input 
               type="submit" 
               defaultValue="Login" />
             </div>
-            <div className="signup-link">
+            <div className={styles.signupLink}>
               Already a member? <Link to={'/login'}>Login here</Link>
             </div>
           </form>

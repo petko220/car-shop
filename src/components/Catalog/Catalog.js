@@ -3,16 +3,19 @@ import { CatalogItem } from "../CatalogItem/CatalogItem";
 export const Catalog = ({
   cars
 }) => {
+
+  
+
   return (
     <div className="wedo ">
       <div className="container">
         <div className="row">
           <div className="col-md-12">
             <div className="titlepage">
-              <h2>What We Do</h2>
+              <h2>Our selection</h2>
               <p>
-                It is a long established fact that a reader will be distracted by
-                the{" "}
+                Have a look and see if you can find something you like
+                
               </p>
             </div>
           </div>
